@@ -51,6 +51,30 @@ namespace Student.ConsoleApp
             genders.Rows.Add(newRow);
             genders.WriteXml("genders.xml");
             #endregion
+
+            EnterDataStudentsTable(students);
+        }
+
+        private static void EnterDataStudentsTable(DataTable table)
+        {
+            DataRow newRow = table.NewRow();
+           
+            Console.Write("Введите данные\n" +
+                "ФИО: ");
+            newRow["FIO"] = Console.ReadLine();
+
+            Console.Write("Пол (1-муж,2-жен): ");
+            bool check = false;
+            int id = 1;
+            while (!check)
+            {
+                check = int.TryParse(Console.ReadLine(), out id);
+                if (id != 1 && id != 2)
+                    check = false;
+            }
+            newRow["GenderId"] = id;
+            table.Rows.Add(newRow);
+            table.WriteXml("students.xml");
         }
 
         private static void InitGenderTable(ref DataTable genders)
@@ -98,7 +122,7 @@ namespace Student.ConsoleApp
             DataColumn genderId = new DataColumn("GenderId", typeof(int))
             {
                 Caption = "Пол",
-                AllowDBNull = false
+                AllowDBNull = false,
             };
 
             students.Columns.AddRange(new DataColumn[]
